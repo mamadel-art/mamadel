@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mamadel Art | Juguetes Artesanales de Algodón y Muñecas de Colección</title>
+    
+    <!-- Luxury Vector SVG Favicon (Gold M in Ornamental Circle) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23170f0c'/%3E%3Ccircle cx='32' cy='32' r='28' fill='none' stroke='%23d4af37' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%23d4af37' stroke-width='0.75' stroke-dasharray='3 2'/%3E%3Ctext x='32' y='43' font-family='Georgia, serif' font-size='32' font-weight='bold' fill='%23d4af37' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            base: '#170f0c',
+                            dark: '#1f1511',
+                            brown: '#2a1c16',
+                            card: '#241712',
+                            gold: '#d4af37',
+                            gold_light: '#f3e5ab',
+                            gold_hover: '#e5be49',
+                            ivory: '#FAF7F2',
+                            emerald: '#1e382b'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #170f0c;
+            background-image: 
+                radial-gradient(circle at 50% 0%, #2f1e16 0%, transparent 70%),
+                radial-gradient(circle at 80% 80%, #251610 0%, transparent 60%);
+            color: #FAF7F2;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 10;
+        }
+
+        .stand-subtitle {
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.95), 0 1px 4px rgba(0, 0, 0, 0.9);
+            letter-spacing: 0.01em;
+        }
+
+        .art-card {
+            background: linear-gradient(145deg, rgba(38, 25, 20, 0.96), rgba(27, 18, 14, 0.98));
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+            contain: layout paint;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+        .art-card:hover {
+            border-color: rgba(212, 175, 55, 0.65);
+            transform: translateY(-4px) translateZ(0);
+            box-shadow: 0 16px 30px -10px rgba(0, 0, 0, 0.75), 0 0 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .card-media-box {
+            line-height: 0;
+            font-size: 0;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+        .card-media-box video::-webkit-media-controls {
+            display: none !important;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #170f0c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b281f;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-[#FAF7F2] selection:bg-brand-gold selection:text-brand-base">
+
+    <!-- Atmospheric Floating Gold Dust Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Toast Notification -->
+    <div id="toast-msg" class="fixed bottom-5 right-5 z-[120] bg-brand-card border border-brand-gold text-brand-gold px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold hidden transition-all"></div>
+
+    <div class="content-layer min-h-screen flex flex-col">
+
+        <!-- Header -->
+        <header class="w-full border-b border-brand-gold/20 backdrop-blur-md bg-brand-base/85 sticky top-0 z-40 transition-all">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center">
+                
+                <!-- Logo & Author Badge -->
+                <div id="logo-trigger" class="flex items-center gap-3 cursor-pointer select-none" title="Tatiana Adelman">
+                    <div class="w-10 h-10 rounded-full border border-brand-gold/60 flex items-center justify-center bg-brand-brown/60 text-brand-gold font-serif font-bold text-xl shadow-inner">
+                        M
+                    </div>
+                    <div>
+                        <div class="font-serif text-lg sm:text-xl font-bold tracking-wider text-brand-gold uppercase leading-tight">
+                            <span class="lang-text" data-es="Tatiana Adelman" data-en="Tatiana Adelman" data-ru="Татьяна Адельман">Tatiana Adelman</span>
+                        </div>
+                        <div class="text-[10px] uppercase tracking-widest text-brand-gold_light/70 font-medium">
+                            <span class="lang-text" data-es="Autora • Escultura en Algodón" data-en="Artist • Spun-Cotton Art" data-ru="Авторская мастерская">Autora • Escultura en Algodón</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Language Switcher & Sandwich Menu Trigger -->
+                <div class="flex items-center gap-2.5 sm:gap-3">
+                    <div class="inline-flex rounded-lg p-1 bg-brand-dark border border-brand-gold/30 shadow-inner">
+                        <button onclick="setLang('es')" id="btn-es" class="px-2.5 py-1 text-xs font-semibold rounded transition-all text-brand-gold bg-brand-brown shadow-sm">ES</button>
+                        <button onclick="setLang('en')" id="btn-en" class="px-2.5 py-1 text-xs font-semibold rounded transition-all text-white/70 hover:text-brand-gold">EN</button>
+                        <button onclick="setLang('ru')" id="btn-ru" class="px-2.5 py-1 text-xs font-semibold rounded transition-all text-white/70 hover:text-brand-gold">RU</button>
+                    </div>
+
+                    <button onclick="toggleSideDrawer(true)" aria-label="Menu" class="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-brand-dark hover:bg-brand-brown border border-brand-gold/40 text-brand-gold transition-all shadow-md">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        <span class="hidden sm:inline text-xs font-semibold uppercase tracking-wider lang-text" data-es="Menú" data-en="Menu" data-ru="Меню">Menú</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Slide-Out Side Navigation Drawer (Sandwich Menu) -->
+        <div id="side-drawer-backdrop" onclick="toggleSideDrawer(false)" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300"></div>
+        <aside id="side-drawer" class="fixed top-0 right-0 z-50 h-full w-80 max-w-[85vw] bg-brand-card border-l border-brand-gold/30 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-6 overflow-y-auto">
+            <div>
+                <div class="flex items-center justify-between border-b border-brand-gold/20 pb-4 mb-6">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-full border border-brand-gold/60 flex items-center justify-center bg-brand-brown text-brand-gold font-serif font-bold text-base">M</div>
+                        <span class="font-serif text-lg font-bold text-brand-gold tracking-wider uppercase">Mamadel Art</span>
+                    </div>
+                    <button onclick="toggleSideDrawer(false)" class="text-brand-gold hover:text-white text-2xl leading-none px-1">✕</button>
+                </div>
+
+                <nav class="space-y-2 mb-8">
+                    <a href="#gallery" onclick="toggleSideDrawer(false)" class="flex items-center justify-between px-4 py-3 rounded-xl bg-brand-base/70 hover:bg-brand-brown/80 border border-brand-gold/20 text-[#FAF7F2] font-medium text-sm transition-all">
+                        <span class="lang-text" data-es="🖼 Galería de Muñecas" data-en="🖼 Doll Gallery" data-ru="🖼 Галерея игрушек">🖼 Galería de Muñecas</span>
+                        <span class="text-brand-gold">→</span>
+                    </a>
+                    <a href="#contacts" onclick="toggleSideDrawer(false)" class="flex items-center justify-between px-4 py-3 rounded-xl bg-brand-base/70 hover:bg-brand-brown/80 border border-brand-gold/20 text-[#FAF7F2] font-medium text-sm transition-all">
+                        <span class="lang-text" data-es="📍 Contacto & Redes" data-en="📍 Contact & Socials" data-ru="📍 Контакты и соцсети">📍 Contacto & Redes</span>
+                        <span class="text-brand-gold">→</span>
+                    </a>
+                </nav>
+
+                <div class="mb-6">
+                    <div class="text-[11px] font-semibold uppercase tracking-widest text-brand-gold/80 mb-3 px-1">
+                        <span class="lang-text" data-es="Contacto Directo" data-en="Direct Contact" data-ru="Быстрая связь">Contacto Directo</span>
+                    </div>
+                    <div class="space-y-2.5">
+                        <a href="https://wa.me/34671587761?text=Hola,%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre%20las%20mu%C3%B1ecas%20Mamadel%20Art" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 rounded-xl bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/40 text-[#25D366] transition-all">
+                            <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M12.031 0C5.492 0 .197 5.29.197 11.826c0 2.091.545 4.135 1.583 5.928L0 24l6.452-1.693c1.722.955 3.69 1.458 5.717 1.458 6.536 0 11.832-5.295 11.832-11.827C24.001 5.29 18.567 0 12.031 0zm0 21.656c-1.782 0-3.528-.48-5.06-1.389l-.36-.214-3.763.987.998-3.666-.235-.374c-1-1.593-1.528-3.433-1.528-5.342 0-5.385 4.38-9.766 9.766-9.766 5.384 0 9.764 4.381 9.764 9.766 0 5.387-4.38 9.768-9.764 9.768z"/></svg>
+                            <div class="text-left">
+                                <div class="text-xs font-bold">WhatsApp (España)</div>
+                                <div class="text-[11px] text-[#FAF7F2]/80">+34 671 58 77 61</div>
+                            </div>
+                        </a>
+
+                        <a href="https://www.instagram.com/adelman.tatiana/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 rounded-xl bg-[#E1306C]/15 hover:bg-[#E1306C]/25 border border-[#E1306C]/40 text-[#E1306C] transition-all">
+                            <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            <div class="text-left">
+                                <div class="text-xs font-bold">Instagram</div>
+                                <div class="text-[11px] text-[#FAF7F2]/80">@adelman.tatiana</div>
+                            </div>
+                        </a>
+
+                        <a href="https://www.facebook.com/profile.php?id=61595882687478" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 rounded-xl bg-[#1877F2]/15 hover:bg-[#1877F2]/25 border border-[#1877F2]/40 text-[#1877F2] transition-all">
+                            <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                            <div class="text-left">
+                                <div class="text-xs font-bold">Facebook</div>
+                                <div class="text-[11px] text-[#FAF7F2]/80">Mamadel Art</div>
+                            </div>
+                        </a>
+
+                        <a href="https://mamadel.ru/art" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 rounded-xl bg-brand-base hover:bg-brand-brown border border-brand-gold/40 text-brand-gold transition-all">
+                            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                            <div class="text-left">
+                                <div class="text-xs font-bold">mamadel.ru/art</div>
+                                <div class="text-[11px] text-brand-gold_light/70">Catálogo Oficial</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-brand-gold/20 pt-4 text-[11px] text-[#FAF7F2]/50 flex justify-between items-center">
+                <span>España • Alicante</span>
+                <button onclick="toggleSideDrawer(false); openAdminModal();" class="text-brand-gold/40 hover:text-brand-gold px-2 py-1 rounded" title="Admin">⚙️</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-10 w-full">
+
+            <!-- Hero Section -->
+            <section class="relative rounded-3xl overflow-hidden border border-brand-gold/35 mb-14 md:mb-18 shadow-2xl bg-[#22150f] min-h-[360px] sm:min-h-[420px] flex items-center">
+                <div class="absolute inset-0 z-0 flex justify-end bg-[#22150f]">
+                    <img id="hero-bg-img" src="e4891015-6fbf-4b0b-b307-d2f1fe531243.jpg" alt="Madame Joujou - Mamadel Art" class="w-full md:w-[75%] lg:w-[70%] h-full object-cover object-right brightness-105 contrast-105 transition-opacity duration-500" onerror="handleHeroImageError(this)">
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#170f0c] via-[#170f0c]/85 via-45% to-transparent"></div>
+                </div>
+
+                <div class="relative z-10 w-full md:w-[62%] lg:w-[56%] p-6 sm:p-10 md:p-12 text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-gold/40 bg-brand-card/90 text-brand-gold text-[10px] sm:text-[11px] font-medium uppercase tracking-widest mb-3 shadow-md">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse"></span>
+                        <span class="lang-text" data-es="Taller de Arte • Hecho a mano en España" data-en="Art Studio • Handcrafted Heritage" data-ru="Семейная арт-мастерская • Ручная работа">Taller de Arte • Hecho a mano en España</span>
+                    </div>
+
+                    <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-brand-gold tracking-wide mb-2.5 uppercase drop-shadow">
+                        Mamadel Art
+                    </h1>
+
+                    <div class="mb-3">
+                        <p id="hero-subtitle" class="stand-subtitle text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-[#FAF7F2] font-sans leading-snug">
+                            Juguetes artesanales de algodón prensado y muñecas de colección
+                        </p>
+                    </div>
+
+                    <p id="hero-desc" class="text-xs sm:text-sm text-[#FAF7F2]/90 font-light leading-relaxed mb-5 font-sans drop-shadow">
+                        Obras únicas modeladas minuciosamente a mano con algodón natural, pasta tradicional y delicada pintura al óleo. Cada figura es una pieza irrepetible con alma, calidez y encanto nostálgico.
+                    </p>
+
+                    <div class="flex flex-wrap justify-start items-center gap-3">
+                        <a href="#gallery" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-brand-gold to-[#c09a2e] text-brand-base font-semibold text-xs tracking-wider uppercase hover:brightness-110 shadow-lg shadow-brand-gold/20 transition-all">
+                            <span class="lang-text" data-es="Galería" data-en="Gallery" data-ru="Галерея">Galería</span>
+                        </a>
+                        <button type="button" onclick="toggleSideDrawer(true)" class="px-5 py-2.5 rounded-full border border-brand-gold/60 hover:border-brand-gold bg-brand-base/75 text-brand-gold_light hover:text-brand-gold text-xs font-semibold tracking-wider uppercase backdrop-blur-sm transition-all flex items-center gap-2">
+                            <span class="lang-text" data-es="Contacto & Redes" data-en="Contact & Socials" data-ru="Контакты и соцсети">Contacto & Redes</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gallery Section -->
+            <section id="gallery" class="mb-20">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-brand-gold/25 pb-4 mb-8 gap-4">
+                    <div>
+                        <h2 class="font-serif text-3xl md:text-4xl text-brand-gold font-bold">
+                            <span class="lang-text" data-es="Galería" data-en="Gallery" data-ru="Галерея">Galería</span>
+                        </h2>
+                        <p class="text-xs sm:text-sm text-[#FAF7F2]/75 mt-1 font-light">
+                            <span class="lang-text" 
+                                  data-es="Pasa el cursor sobre la figura para reproducir el Reels en vivo. Toca para ver detalles." 
+                                  data-en="Hover over a sculpture to preview the live Reels. Tap to explore details." 
+                                  data-ru="Наведите курсор, чтобы запустить живой Reels. Нажмите для подробного просмотра.">
+                                  Pasa el cursor sobre la figura para reproducir el Reels в vivo. Toca para ver detalles.
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="text-xs text-brand-gold_light/80 bg-brand-dark/80 px-3.5 py-1.5 rounded-full border border-brand-gold/25 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-brand-gold"></span>
+                        <span class="lang-text" 
+                              data-es="Reels verticales 9:16 interactivos" 
+                              data-en="Interactive 9:16 vertical Reels" 
+                              data-ru="Интерактивные вертикальные Reels 9:16">
+                              Reels verticales 9:16 interactivos
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 6 Dedicated Doll Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="dolls-container">
+                    <!-- Rendered dynamically -->
+                </div>
+            </section>
+
+            <!-- Contact & Socials Bar -->
+            <section id="contacts" class="max-w-4xl mx-auto rounded-3xl bg-brand-card/95 border border-brand-gold/30 p-8 md:p-10 shadow-2xl text-center mb-12 relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-brand-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <h3 class="font-serif text-2xl md:text-3xl text-brand-gold font-bold mb-2">
+                    <span class="lang-text" data-es="Contacto Directo & Redes Oficiales" data-en="Direct Contact & Official Socials" data-ru="Прямая связь и официальные соцсети">Contacto Directo & Redes Oficiales</span>
+                </h3>
+                <p class="text-xs sm:text-sm text-[#FAF7F2]/80 font-light mb-6 max-w-xl mx-auto">
+                    <span class="lang-text" 
+                          data-es="Estamos en España. Comuníquese por WhatsApp para encargos o visite nuestros perfiles oficiales en redes sociales." 
+                          data-en="Based in Spain. Message us on WhatsApp for orders or visit our official social profiles." 
+                          data-ru="Мы находимся в Испании. Пишите в WhatsApp для заказа или подписывайтесь на наши страницы в соцсетях.">
+                          Estamos en España. Comuníquese por WhatsApp para encargos o visite nuestros perfiles oficiales en redes sociales.
+                    </span>
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <a href="https://wa.me/34671587761?text=Hola,%20quisiera%20informaci%C3%B3n%20sobre%20las%20obras%20de%20Mamadel%20Art" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/40 text-[#25D366] transition-all group">
+                        <svg class="w-6 h-6 fill-current mb-1.5 transition-transform group-hover:scale-110" viewBox="0 0 24 24"><path d="M12.031 0C5.492 0 .197 5.29.197 11.826c0 2.091.545 4.135 1.583 5.928L0 24l6.452-1.693c1.722.955 3.69 1.458 5.717 1.458 6.536 0 11.832-5.295 11.832-11.827C24.001 5.29 18.567 0 12.031 0zm0 21.656c-1.782 0-3.528-.48-5.06-1.389l-.36-.214-3.763.987.998-3.666-.235-.374c-1-1.593-1.528-3.433-1.528-5.342 0-5.385 4.38-9.766 9.766-9.766 5.384 0 9.764 4.381 9.764 9.766 0 5.387-4.38 9.768-9.764 9.768z"/></svg>
+                        <span class="font-semibold text-sm">WhatsApp</span>
+                        <span class="text-[11px] text-[#FAF7F2]/70 mt-0.5">+34 671 58 77 61</span>
+                    </a>
+
+                    <a href="https://www.instagram.com/adelman.tatiana/" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-[#E1306C]/15 hover:bg-[#E1306C]/25 border border-[#E1306C]/40 text-[#E1306C] transition-all group">
+                        <svg class="w-6 h-6 fill-current mb-1.5 transition-transform group-hover:scale-110" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        <span class="font-semibold text-sm">Instagram</span>
+                        <span class="text-[11px] text-[#FAF7F2]/70 mt-0.5">@adelman.tatiana</span>
+                    </a>
+
+                    <a href="https://www.facebook.com/profile.php?id=61595882687478" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-[#1877F2]/15 hover:bg-[#1877F2]/25 border border-[#1877F2]/40 text-[#1877F2] transition-all group">
+                        <svg class="w-6 h-6 fill-current mb-1.5 transition-transform group-hover:scale-110" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        <span class="font-semibold text-sm">Facebook</span>
+                        <span class="text-[11px] text-[#FAF7F2]/70 mt-0.5">Mamadel Art</span>
+                    </a>
+
+                    <a href="https://mamadel.ru/art" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-brand-dark hover:bg-brand-brown/80 border border-brand-gold/40 text-brand-gold transition-all group">
+                        <svg class="w-6 h-6 mb-1.5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                        <span class="font-semibold text-sm">mamadel.ru/art</span>
+                        <span class="text-[11px] text-brand-gold_light/70 mt-0.5">Catálogo Web</span>
+                    </a>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-auto border-t border-brand-gold/20 bg-brand-base/95 py-6 text-center text-xs text-[#FAF7F2]/50 font-light">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="font-serif text-brand-gold text-sm tracking-wider">
+                    MAMADEL ART • TATIANA ADELMAN
+                </div>
+                <div>
+                    España • Alicante / Valencia • Hecho a mano
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="copyright-trigger" class="cursor-pointer select-none hover:text-brand-gold transition-colors py-1">© Mamadel Art • Todos los derechos reservados</span>
+                    <button id="secret-admin-trigger" onclick="openAdminModal()" class="w-3 h-3 rounded-full bg-brand-gold/20 hover:bg-brand-gold cursor-pointer transition-colors" title="Admin"></button>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- MINIMALIST SECRET ADMIN BACKEND MODAL -->
+    <div id="admin-modal" onclick="if(event.target === this) closeAdminModal()" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="bg-brand-card border border-brand-gold/60 rounded-2xl max-w-xl w-full p-5 shadow-2xl relative max-h-[90vh] flex flex-col">
+            
+            <div class="flex justify-between items-center border-b border-brand-gold/20 pb-3 mb-3">
+                <h3 class="font-serif text-xl text-brand-gold font-bold">⚙️ Панель управления</h3>
+                <button onclick="closeAdminModal()" class="text-brand-gold hover:text-white text-xl leading-none">✕</button>
+            </div>
+
+            <!-- Doll Tabs -->
+            <div class="flex gap-1.5 overflow-x-auto pb-2 border-b border-brand-gold/20 mb-3" id="admin-tabs"></div>
+
+            <!-- Compact Form -->
+            <div class="flex-grow overflow-y-auto pr-1 space-y-3 text-xs">
+
+                <div class="flex gap-2">
+                    <input type="text" id="admin-drive-sync" placeholder="Ссылки с Google Диска (папка или файлы)..." class="flex-grow px-2.5 py-1.5 rounded-lg bg-brand-base border border-brand-gold/30 text-[#FAF7F2]">
+                    <button type="button" onclick="syncFromGoogleDriveInput()" class="px-3 py-1.5 rounded-lg bg-brand-gold text-brand-base font-bold shrink-0">Синхр.</button>
+                </div>
+
+                <div class="flex gap-2">
+                    <input type="text" id="admin-json-input" placeholder="JSON импорт: {'title':...}" class="flex-grow px-2.5 py-1.5 rounded-lg bg-brand-base border border-brand-gold/30 text-[#FAF7F2] font-mono text-[11px]">
+                    <button type="button" onclick="applyJsonImport()" class="px-3 py-1.5 rounded-lg bg-brand-brown border border-brand-gold/40 text-brand-gold font-bold shrink-0">JSON</button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] text-brand-gold mb-1">Видео Reels (URL / Drive)</label>
+                        <div class="flex gap-1.5">
+                            <input type="text" id="admin-video-url" placeholder="Ссылка на видео" class="w-full px-2.5 py-1.5 rounded-lg bg-brand-base border border-brand-gold/30 text-[#FAF7F2]">
+                            <label class="px-2.5 py-1.5 rounded-lg bg-brand-dark border border-brand-gold/40 text-brand-gold cursor-pointer shrink-0 hover:bg-brand-brown" title="Загрузить видео с диска">
+                                📁<input type="file" accept="video/*" class="hidden" onchange="handleAdminFileUpload(event, 'video')">
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-brand-gold mb-1">Обложка (URL / Drive)</label>
+                        <div class="flex gap-1.5">
+                            <input type="text" id="admin-image-url" placeholder="Ссылка на фото" class="w-full px-2.5 py-1.5 rounded-lg bg-brand-base border border-brand-gold/30 text-[#FAF7F2]">
+                            <label class="px-2.5 py-1.5 rounded-lg bg-brand-dark border border-brand-gold/40 text-brand-gold cursor-pointer shrink-0 hover:bg-brand-brown" title="Загрузить фото с диска">
+                                📁<input type="file" accept="image/*" class="hidden" onchange="handleAdminFileUpload(event, 'image')">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="text-[11px] text-brand-gold">Доп. фото галереи (по 1 ссылке на строку)</label>
+                        <label class="text-[11px] text-brand-gold underline cursor-pointer">
+                            + Файлы с ПК<input type="file" accept="image/*" multiple class="hidden" onchange="handleAdminGalleryFilesUpload(event)">
+                        </label>
+                    </div>
+                    <textarea id="admin-gallery-urls" rows="2" placeholder="https://drive.google.com/file/d/..." class="w-full px-2.5 py-1.5 rounded-lg bg-brand-base border border-brand-gold/30 text-[#FAF7F2] font-mono text-[11px]"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <div>
+                        <label class="block text-[11px] text-brand-gold mb-1">Título (ES)</label>
+                        <input type="text" id="admin-title-es" class="w-full px-2 py-1.5 rounded-lg bg-brand-base border border-brand-gold/30 text-[#FAF7F2]">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-brand-gold mb-1">Title (EN)</label>
+                        <input type="text" id="admin-title-en" class="w-full px-2 py-1.5 rounded-lg bg-brand-base border border-brand-gold/30 text-[#FAF7F2]">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-brand-gold mb-1">Название (RU)</label>
+                        <input type="text" id="admin-title-ru" class="w-full px-2 py-1.5 rounded-lg bg-brand-base border border-brand-gold/30 text-[#FAF7F2]">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <div>
+                        <label class="block text-[11px] text-brand-gold mb-1">Описание (ES)</label>
+                        <textarea id="admin-desc-es" rows="2" class="w-full px-2 py-1 rounded-lg bg-brand-base border border-brand-gold/30 text-[#FAF7F2]"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-brand-gold mb-1">Описание (EN)</label>
+                        <textarea id="admin-desc-en" rows="2" class="w-full px-2 py-1 rounded-lg bg-brand-base border border-brand-gold/30 text-[#FAF7F2]"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-brand-gold mb-1">Описание (RU)</label>
+                        <textarea id="admin-desc-ru" rows="2" class="w-full px-2 py-1 rounded-lg bg-brand-base border border-brand-gold/30 text-[#FAF7F2]"></textarea>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-brand-gold/20 flex items-center justify-between gap-2">
+                    <span class="text-[11px] text-[#FAF7F2]/70">Фон шапки (Мадам Жужу):</span>
+                    <div class="flex gap-1.5 flex-grow max-w-xs">
+                        <input type="text" id="admin-hero-bg" placeholder="Ссылка или файл ->" class="w-full px-2 py-1 rounded bg-brand-base border border-brand-gold/30 text-[#FAF7F2] text-[11px]">
+                        <label class="px-2 py-1 rounded bg-brand-dark border border-brand-gold/40 text-brand-gold cursor-pointer shrink-0">
+                            🖼️ Файл<input type="file" accept="image/*" class="hidden" onchange="handleHeroBgUpload(event)">
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-brand-gold/20 pt-3 mt-3 flex justify-between items-center">
+                <button onclick="resetCurrentDollToDefaults()" class="text-xs text-red-400 hover:text-red-300">Сбросить</button>
+                <button onclick="saveAdminChanges()" class="px-5 py-2 rounded-lg bg-brand-gold text-brand-base font-bold text-xs hover:brightness-110 transition-all">Сохранить</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SHOWCASE / VER MÁS MODAL -->
+    <div id="showcase-modal" onclick="if(event.target === this) closeShowcaseModal()" class="fixed inset-0 z-[100] bg-black/92 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="bg-brand-card border border-brand-gold/60 rounded-3xl max-w-4xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[92vh] flex flex-col overflow-y-auto">
+            
+            <button onclick="closeShowcaseModal()" class="absolute top-5 right-5 text-brand-gold hover:text-white text-3xl font-light">✕</button>
+
+            <div class="border-b border-brand-gold/25 pb-4 mb-6 pr-8">
+                <span id="showcase-badge" class="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-gold/20 text-brand-gold border border-brand-gold/40 mb-2"></span>
+                <h3 id="showcase-title" class="font-serif text-3xl sm:text-4xl text-brand-gold font-bold"></h3>
+                <p id="showcase-desc" class="text-xs sm:text-sm text-[#FAF7F2]/80 mt-2 font-light leading-relaxed"></p>
+            </div>
+
+            <div class="mb-6">
+                <div id="showcase-media-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+            </div>
+
+            <div class="mt-auto pt-5 border-t border-brand-gold/25 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="text-xs text-[#FAF7F2]/70 text-center sm:text-left">
+                    <span class="lang-text" data-es="¿Interesado en adquirir o encargar esta pieza?" data-en="Interested in acquiring or commissioning this piece?" data-ru="Хотите приобрести или заказать эту игрушку?">¿Interesado en adquirir o encargar esta pieza?</span>
+                </div>
+                <a id="showcase-whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20b858] text-brand-base font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full transition-all shadow-lg">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 0C5.492 0 .197 5.29.197 11.826c0 2.091.545 4.135 1.583 5.928L0 24l6.452-1.693c1.722.955 3.69 1.458 5.717 1.458 6.536 0 11.832-5.295 11.832-11.827C24.001 5.29 18.567 0 12.031 0zm0 21.656c-1.782 0-3.528-.48-5.06-1.389l-.36-.214-3.763.987.998-3.666-.235-.374c-1-1.593-1.528-3.433-1.528-5.342 0-5.385 4.38-9.766 9.766-9.766 5.384 0 9.764 4.381 9.764 9.766 0 5.387-4.38 9.768-9.764 9.768z"/></svg>
+                    <span>WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // --- IndexedDB for Local Video & Image Blobs ---
+        const DB_NAME = 'MamadelMediaDB';
+        const STORE_NAME = 'mediaBlobs';
+        let dbPromise = null;
+        const blobUrlCache = {};
+
+        function getDB() {
+            if (!dbPromise) {
+                dbPromise = new Promise((resolve) => {
+                    try {
+                        const req = indexedDB.open(DB_NAME, 1);
+                        req.onupgradeneeded = (e) => {
+                            const db = e.target.result;
+                            if (!db.objectStoreNames.contains(STORE_NAME)) {
+                                db.createObjectStore(STORE_NAME);
+                            }
+                        };
+                        req.onsuccess = (e) => resolve(e.target.result);
+                        req.onerror = () => resolve(null);
+                    } catch (err) {
+                        resolve(null);
+                    }
+                });
+            }
+            return dbPromise;
+        }
+
+        async function saveBlobToDB(key, blob) {
+            const db = await getDB();
+            if (!db) return null;
+            return new Promise((resolve) => {
+                try {
+                    const tx = db.transaction(STORE_NAME, 'readwrite');
+                    tx.objectStore(STORE_NAME).put(blob, key);
+                    tx.oncomplete = () => {
+                        const objUrl = URL.createObjectURL(blob);
+                        blobUrlCache[key] = objUrl;
+                        resolve('idb://' + key);
+                    };
+                    tx.onerror = () => resolve(null);
+                } catch (e) {
+                    resolve(null);
+                }
+            });
+        }
+
+        async function hydrateAllBlobs() {
+            const db = await getDB();
+            if (!db) return;
+            return new Promise((resolve) => {
+                try {
+                    const tx = db.transaction(STORE_NAME, 'readonly');
+                    const store = tx.objectStore(STORE_NAME);
+                    const keysReq = store.getAllKeys();
+                    keysReq.onsuccess = async () => {
+                        const keys = keysReq.result || [];
+                        for (const k of keys) {
+                            await new Promise((r) => {
+                                const getReq = store.get(k);
+                                getReq.onsuccess = () => {
+                                    if (getReq.result instanceof Blob) {
+                                        blobUrlCache[k] = URL.createObjectURL(getReq.result);
+                                    }
+                                    r();
+                                };
+                                getReq.onerror = () => r();
+                            });
+                        }
+                        resolve();
+                    };
+                    keysReq.onerror = () => resolve();
+                } catch (e) {
+                    resolve();
+                }
+            });
+        }
+
+        // --- 1. Initial 6 Doll Definitions ---
+        const DEFAULT_DOLLS = [
+            {
+                id: 'doll-1',
+                title: {
+                    es: 'Arlequín con Llaves y Ajedrez',
+                    en: 'Harlequin with Brass Key & Chess',
+                    ru: 'Арлекин с ключом и шахматами'
+                },
+                badge: {
+                    es: 'Pieza Principal',
+                    en: 'Masterpiece',
+                    ru: 'Флагман'
+                },
+                desc: {
+                    es: 'Muñeca escultórica modelada en algodón con gorguera vintage color coral, botas rojas y llave de latón. Rostro pintado a mano.',
+                    en: 'Sculptural doll in spun cotton with coral vintage ruff, crimson boots, and brass key. Hand-painted face.',
+                    ru: 'Скульптурная кукла из хлопковой ваты с кружевным жабо, красными сапожками и ключом. Тончайшая роспись лица.'
+                },
+                defaultCover: '20261024_113144_2.jpg',
+                coverUrl: '20261024_113144_2.jpg',
+                reelsUrl: 'final_2.mp4',
+                gallery: ['20261024_113119_2.jpg', '20261024_113144z.jpg']
+            },
+            {
+                id: 'doll-2',
+                title: {
+                    es: 'Madame Joujou (Homenaje a Vermeer)',
+                    en: 'Madame Joujou (Vermeer Tribute)',
+                    ru: 'Мадам Жужу (Посвящение Вермееру)'
+                },
+                badge: {
+                    es: 'Colección de Arte',
+                    en: 'Art Tribute',
+                    ru: 'Арт-коллекция'
+                },
+                desc: {
+                    es: 'Inspirada en La Joven de la Perla. Turbante azul cobalto, brocado dorado y perla luminosa.',
+                    en: 'Inspired by Girl with a Pearl Earring. Cobalt turban, golden brocade, and luminous pearl.',
+                    ru: 'Образ по мотивам Вермеера. Кобальтовый тюрбан, золотая парча и жемчужная сережка.'
+                },
+                defaultCover: 'e4891015-6fbf-4b0b-b307-d2f1fe531243.jpg',
+                coverUrl: 'e4891015-6fbf-4b0b-b307-d2f1fe531243.jpg',
+                reelsUrl: 'video3.mp4',
+                gallery: ['e4891015-6fbf-4b0b-b307-d2f1fe531243.jpg']
+            },
+            {
+                id: 'doll-3',
+                title: {
+                    es: 'Pequeño Cosmonauta Soviético',
+                    en: 'Vintage Little Cosmonaut',
+                    ru: 'Маленький космонавт'
+                },
+                badge: {
+                    es: 'Serie Retro',
+                    en: 'Retro Series',
+                    ru: 'Ретро-серия'
+                },
+                desc: {
+                    es: 'Figura nostálgica con escafandra de algodón, banderín festivo y mirada soñadora de la era espacial.',
+                    en: 'Nostalgic space age figurine with cotton helmet, festive banner, and vintage holiday charm.',
+                    ru: 'Советский космонавт с флажком в ватном скафандре. Праздничная ностальгия ручной работы.'
+                },
+                defaultCover: '20261024_113119.jpg',
+                coverUrl: '',
+                reelsUrl: '',
+                gallery: []
+            },
+            {
+                id: 'doll-4',
+                title: {
+                    es: 'Niña de Invierno con Madroño',
+                    en: 'Winter Girl in Woolen Hood',
+                    ru: 'Зимняя девочка в капоре'
+                },
+                badge: {
+                    es: 'Cuentos de Nieve',
+                    en: 'Winter Tale',
+                    ru: 'Зимняя сказка'
+                },
+                desc: {
+                    es: 'Abrigo con efecto de escarcha, gorrito de punto y pequeñas manoplas esculpidas en algodón suave.',
+                    en: 'Frost-textured warm coat, vintage bonnet, and miniature mittens in soft spun cotton.',
+                    ru: 'Укутанная девочка в зимней шапочке с эффектом морозного инея и мягкими варежками.'
+                },
+                defaultCover: '20261024_113103.jpg',
+                coverUrl: '',
+                reelsUrl: '',
+                gallery: []
+            },
+            {
+                id: 'doll-5',
+                title: {
+                    es: 'Dama Romántica con Muff',
+                    en: 'Romantic Lady with Muff',
+                    ru: 'Винтажная барышня с муфтой'
+                },
+                badge: {
+                    es: 'Siglo XIX',
+                    en: '19th Century',
+                    ru: 'Ретро-классика'
+                },
+                desc: {
+                    es: 'Elegante figura de época con vestido victoriano, sombrilla y delicada estola de algodón peinado.',
+                    en: 'Period figurine with Victorian style attire, detailed bonnet, and textured cotton muff.',
+                    ru: 'Барышня в старинном платье и шляпке, согревающая ручки в пушистой ватной муфточке.'
+                },
+                defaultCover: '20261024_113056.jpg',
+                coverUrl: '',
+                reelsUrl: '',
+                gallery: []
+            },
+            {
+                id: 'doll-6',
+                title: {
+                    es: 'Conejito Blanco del Bosque',
+                    en: 'White Woodland Bunny',
+                    ru: 'Белый лесной зайчик'
+                },
+                badge: {
+                    es: 'Fauna Mágica',
+                    en: 'Fairytale Fauna',
+                    ru: 'Сказки леса'
+                },
+                desc: {
+                    es: 'Tierno conejito de algodón natural con mini canasta de mimbre y pequeñas zanahorias artesanales.',
+                    en: 'Sweet spun-cotton woodland hare carrying a tiny woven basket and miniature carrots.',
+                    ru: 'Сказочный белый зайчик с плетеной корзинкой, созданный в традиционной технике.'
+                },
+                defaultCover: '',
+                coverUrl: '',
+                reelsUrl: '',
+                gallery: []
+            }
+        ];
+
+        let DOLLS = JSON.parse(JSON.stringify(DEFAULT_DOLLS));
+        let HERO_BG = 'e4891015-6fbf-4b0b-b307-d2f1fe531243.jpg';
+
+        function showToast(text) {
+            const t = document.getElementById('toast-msg');
+            if (!t) return;
+            t.textContent = text;
+            t.classList.remove('hidden');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => t.classList.add('hidden'), 3000);
+        }
+
+        function loadSavedDollsConfig() {
+            try {
+                const saved = localStorage.getItem('mamadel_dolls_v2');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    DOLLS = DOLLS.map(d => {
+                        const match = parsed.find(p => p.id === d.id);
+                        return match ? { ...d, ...match } : d;
+                    });
+                }
+                const savedHero = localStorage.getItem('mamadel_hero_bg');
+                if (savedHero) HERO_BG = savedHero;
+            } catch (e) {
+                console.warn("Could not read local config", e);
+            }
+        }
+
+        function saveDollsConfig() {
+            try {
+                localStorage.setItem('mamadel_dolls_v2', JSON.stringify(DOLLS));
+                localStorage.setItem('mamadel_hero_bg', HERO_BG);
+            } catch (e) {
+                console.warn("Storage quota exceeded", e);
+            }
+        }
+
+        function extractDriveFileId(url) {
+            if (!url) return null;
+            const m1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+            if (m1 && m1[1]) return m1[1];
+            const m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (m2 && m2[1]) return m2[1];
+            const m3 = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (m3 && m3[1]) return m3[1];
+            return null;
+        }
+
+        function resolveImageUrl(url) {
+            if (!url) return '';
+            const trimmed = url.trim();
+            if (trimmed.startsWith('idb://')) {
+                const key = trimmed.replace('idb://', '');
+                return blobUrlCache[key] || '';
+            }
+            if (trimmed.includes('drive.google.com') || trimmed.includes('docs.google.com')) {
+                const id = extractDriveFileId(trimmed);
+                if (id) {
+                    return `https://drive.google.com/thumbnail?id=${id}&sz=w1600`;
+                }
+            }
+            return trimmed;
+        }
+
+        function resolveVideoUrl(url) {
+            if (!url) return '';
+            const trimmed = url.trim();
+            if (trimmed.startsWith('idb://')) {
+                const key = trimmed.replace('idb://', '');
+                return blobUrlCache[key] || '';
+            }
+            if (trimmed.includes('drive.google.com')) {
+                const id = extractDriveFileId(trimmed);
+                if (id) {
+                    return `https://drive.google.com/uc?export=download&id=${id}`;
+                }
+            }
+            return trimmed;
+        }
+
+        function getDriveVideoIframeUrl(url) {
+            if (!url) return null;
+            if (url.includes('drive.google.com')) {
+                const id = extractDriveFileId(url);
+                if (id) return `https://drive.google.com/file/d/${id}/preview`;
+            }
+            return null;
+        }
+
+        function updateHeroBannerDisplay() {
+            const heroImg = document.getElementById('hero-bg-img');
+            if (!heroImg) return;
+            const resolved = resolveImageUrl(HERO_BG) || 'e4891015-6fbf-4b0b-b307-d2f1fe531243.jpg';
+            heroImg.style.opacity = '1';
+            heroImg.src = resolved;
+        }
+
+        function handleHeroImageError(img) {
+            img.onerror = null;
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+                <defs>
+                    <radialGradient id="bg" cx="72%" cy="48%" r="55%">
+                        <stop offset="0%" stop-color="#432b1f"/>
+                        <stop offset="55%" stop-color="#261710"/>
+                        <stop offset="100%" stop-color="#170f0c"/>
+                    </radialGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#bg)"/>
+                <circle cx="670" cy="245" r="165" fill="none" stroke="#d4af37" stroke-width="1.2" opacity="0.35"/>
+                <circle cx="670" cy="245" r="145" fill="none" stroke="#d4af37" stroke-width="0.6" stroke-dasharray="6 4" opacity="0.3"/>
+                <text x="670" y="235" font-family="Cormorant Garamond, Georgia, serif" font-size="32" fill="#d4af37" text-anchor="middle" opacity="0.75">Madame Joujou</text>
+                <text x="670" y="270" font-family="Inter, sans-serif" font-size="13" fill="#FAF7F2" text-anchor="middle" opacity="0.5">Mamadel Art</text>
+            </svg>`;
+            img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+        }
+
+        function toggleSideDrawer(open) {
+            const drawer = document.getElementById('side-drawer');
+            const backdrop = document.getElementById('side-drawer-backdrop');
+            if (!drawer || !backdrop) return;
+            if (open) {
+                backdrop.classList.remove('hidden');
+                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+                drawer.classList.remove('translate-x-full');
+            } else {
+                backdrop.classList.add('opacity-0');
+                drawer.classList.add('translate-x-full');
+                setTimeout(() => backdrop.classList.add('hidden'), 300);
+            }
+        }
+
+        // --- 2. Language State ---
+        let currentLang = 'es';
+        let adminSelectedDollId = 'doll-1';
+
+        const translations = {
+            es: {
+                subtitle: "Juguetes artesanales de algodón prensado y muñecas de colección",
+                desc: "Obras únicas modeladas minuciosamente a mano con algodón natural, pasta tradicional y delicada pintura al óleo. Cada figura es una pieza irrepetible con alma, calidez y encanto nostálgico.",
+                moreBtn: "Ver más & videos"
+            },
+            en: {
+                subtitle: "Handcrafted spun-cotton toys and collectible dolls",
+                desc: "Unique heirloom art dolls hand-sculpted using natural cotton fibers, traditional boiled paste, and delicate oil painting. Every figurine is a warm, tactile masterpiece filled with nostalgic charm.",
+                moreBtn: "See more & clips"
+            },
+            ru: {
+                subtitle: "Авторская ватная игрушка и коллекционные куклы",
+                desc: "Уникальные коллекционные куклы из хлопковой ваты, традиционного клейстера и тонкой художественной росписи. Каждая фигурка — теплое рукотворное чудо с душой и сказочной атмосферой.",
+                moreBtn: "Подробнее и видео"
+            }
+        };
+
+        function setLang(lang) {
+            currentLang = lang;
+            ['es', 'en', 'ru'].forEach(l => {
+                const btn = document.getElementById('btn-' + l);
+                if (btn) {
+                    if (l === lang) {
+                        btn.className = "px-2.5 py-1 text-xs font-semibold rounded transition-all text-brand-gold bg-brand-brown shadow-sm";
+                    } else {
+                        btn.className = "px-2.5 py-1 text-xs font-semibold rounded transition-all text-white/70 hover:text-brand-gold";
+                    }
+                }
+            });
+
+            const sub = document.getElementById('hero-subtitle');
+            if (sub && translations[lang]) sub.textContent = translations[lang].subtitle;
+
+            const desc = document.getElementById('hero-desc');
+            if (desc && translations[lang]) desc.textContent = translations[lang].desc;
+
+            document.querySelectorAll('.lang-text').forEach(el => {
+                const text = el.getAttribute('data-' + lang);
+                if (text) el.innerHTML = text;
+            });
+
+            renderAllDolls();
+        }
+
+        // --- 3. Synchronous, Reliable Doll Rendering ---
+        function renderAllDolls() {
+            const container = document.getElementById('dolls-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            DOLLS.forEach(doll => {
+                const title = (doll.title && (doll.title[currentLang] || doll.title.es)) || 'Mamadel Art';
+                const badge = (doll.badge && (doll.badge[currentLang] || doll.badge.es)) || 'Colección';
+                const desc = (doll.desc && (doll.desc[currentLang] || doll.desc.es)) || '';
+
+                const videoSrc = resolveVideoUrl(doll.reelsUrl);
+                const coverSrc = resolveImageUrl(doll.coverUrl) || resolveImageUrl(doll.defaultCover);
+                const safeTitle = title.replace(/'/g, "\\'");
+
+                const card = document.createElement('div');
+                card.className = "art-card rounded-2xl overflow-hidden flex flex-col justify-between group cursor-pointer";
+                card.setAttribute('data-id', doll.id);
+
+                card.innerHTML = `
+                    <div>
+                        <div class="card-media-box relative aspect-[9/16] bg-brand-brown overflow-hidden flex items-center justify-center" 
+                             onmouseenter="handleCardMouseEnter('${doll.id}')" 
+                             onmouseleave="handleCardMouseLeave('${doll.id}')"
+                             onclick="handleCardTouchPlay('${doll.id}')">
+                            
+                            <img id="poster-${doll.id}" src="${coverSrc}" alt="${title}" class="w-full h-full object-cover transition-opacity duration-500" onerror="handleImageError(this, '${doll.coverUrl || ''}', '${safeTitle}')">
+
+                            ${videoSrc ? `
+                                <video id="video-${doll.id}" src="${videoSrc}" loop muted playsinline preload="metadata" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 pointer-events-none"></video>
+                                <div class="absolute top-3 left-3 bg-brand-base/85 text-brand-gold text-[10px] font-semibold px-2.5 py-1 rounded-full border border-brand-gold/40 flex items-center gap-1.5 backdrop-blur-sm pointer-events-none leading-none">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse"></span>
+                                    <span>Reels</span>
+                                </div>
+                            ` : ''}
+                            
+                            <span class="absolute top-3 right-3 bg-brand-base/85 backdrop-blur-md border border-brand-gold/40 text-brand-gold text-[10px] font-semibold px-2.5 py-1 rounded-full uppercase pointer-events-none leading-none">
+                                ${badge}
+                            </span>
+                        </div>
+
+                        <div class="p-5">
+                            <h3 class="font-serif text-2xl text-brand-gold font-bold mb-1.5 leading-snug">
+                                ${title}
+                            </h3>
+                            <p class="text-xs text-[#FAF7F2]/75 font-light leading-relaxed mb-1 line-clamp-3">
+                                ${desc}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="px-5 pb-5 pt-1">
+                        <button onclick="openShowcaseModal('${doll.id}')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-gold to-[#c09a2e] text-brand-base font-bold text-xs uppercase tracking-wider hover:brightness-110 shadow-md transition-all">
+                            ${translations[currentLang] ? translations[currentLang].moreBtn : 'Ver más'}
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function handleImageError(img, originalUrl, title) {
+            const driveId = extractDriveFileId(originalUrl);
+            if (driveId && !img.getAttribute('data-retried')) {
+                img.setAttribute('data-retried', '1');
+                img.src = `https://lh3.googleusercontent.com/d/${driveId}`;
+                return;
+            }
+            useFallbackImage(img, title);
+        }
+
+        function handleCardMouseEnter(dollId) {
+            const video = document.getElementById(`video-${dollId}`);
+            const poster = document.getElementById(`poster-${dollId}`);
+            if (video && video.src) {
+                video.play().then(() => {
+                    video.classList.remove('opacity-0');
+                    video.classList.add('opacity-100');
+                    if (poster) poster.classList.add('opacity-30');
+                }).catch(() => {});
+            }
+        }
+
+        function handleCardMouseLeave(dollId) {
+            const video = document.getElementById(`video-${dollId}`);
+            const poster = document.getElementById(`poster-${dollId}`);
+            if (video) {
+                video.pause();
+                video.classList.remove('opacity-100');
+                video.classList.add('opacity-0');
+                if (poster) poster.classList.remove('opacity-30');
+            }
+        }
+
+        function handleCardTouchPlay(dollId) {
+            if (window.innerWidth <= 1024) {
+                const video = document.getElementById(`video-${dollId}`);
+                if (video && video.src) {
+                    if (video.paused) {
+                        handleCardMouseEnter(dollId);
+                    } else {
+                        handleCardMouseLeave(dollId);
+                    }
+                } else {
+                    openShowcaseModal(dollId);
+                }
+            }
+        }
+
+        // --- 4. Admin Backend Controls ---
+        let copyrightClickCount = 0;
+        let copyrightTimer = null;
+        let logoClickCount = 0;
+        let logoTimer = null;
+
+        function registerAdminTriggers() {
+            const cp = document.getElementById('copyright-trigger');
+            if (cp) {
+                cp.addEventListener('click', () => {
+                    copyrightClickCount++;
+                    clearTimeout(copyrightTimer);
+                    if (copyrightClickCount >= 3) {
+                        copyrightClickCount = 0;
+                        openAdminModal();
+                    } else {
+                        copyrightTimer = setTimeout(() => { copyrightClickCount = 0; }, 1500);
+                    }
+                });
+            }
+
+            const logo = document.getElementById('logo-trigger');
+            if (logo) {
+                logo.addEventListener('click', () => {
+                    logoClickCount++;
+                    clearTimeout(logoTimer);
+                    if (logoClickCount >= 3) {
+                        logoClickCount = 0;
+                        openAdminModal();
+                    } else {
+                        logoTimer = setTimeout(() => { logoClickCount = 0; }, 1500);
+                    }
+                });
+            }
+
+            window.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a' || e.key === 'Ф' || e.key === 'ф')) {
+                    e.preventDefault();
+                    openAdminModal();
+                } else if (e.key === 'Escape') {
+                    closeAdminModal();
+                    closeShowcaseModal();
+                    toggleSideDrawer(false);
+                }
+            });
+        }
+
+        function openAdminModal() {
+            renderAdminTabs();
+            populateAdminForm(adminSelectedDollId);
+            const modal = document.getElementById('admin-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeAdminModal() {
+            const modal = document.getElementById('admin-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+            renderAllDolls();
+        }
+
+        function renderAdminTabs() {
+            const tabsContainer = document.getElementById('admin-tabs');
+            if (!tabsContainer) return;
+            tabsContainer.innerHTML = '';
+
+            DOLLS.forEach((d, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all border ${
+                    d.id === adminSelectedDollId ? 
+                    'bg-brand-gold text-brand-base border-brand-gold' : 
+                    'bg-brand-base text-[#FAF7F2]/70 border-brand-gold/30 hover:border-brand-gold'
+                }`;
+                const titleStr = (d.title.ru || d.title.es || `Кукла ${idx+1}`).substring(0, 14);
+                btn.textContent = `${idx + 1}. ${titleStr}`;
+                btn.onclick = () => {
+                    adminSelectedDollId = d.id;
+                    renderAdminTabs();
+                    populateAdminForm(d.id);
+                };
+                tabsContainer.appendChild(btn);
+            });
+        }
+
+        function populateAdminForm(dollId) {
+            const doll = DOLLS.find(d => d.id === dollId);
+            if (!doll) return;
+
+            document.getElementById('admin-video-url').value = doll.reelsUrl || '';
+            document.getElementById('admin-image-url').value = doll.coverUrl || '';
+            document.getElementById('admin-gallery-urls').value = (doll.gallery || []).join('\n');
+            document.getElementById('admin-title-es').value = (doll.title && doll.title.es) || '';
+            document.getElementById('admin-title-en').value = (doll.title && doll.title.en) || '';
+            document.getElementById('admin-title-ru').value = (doll.title && doll.title.ru) || '';
+            document.getElementById('admin-desc-es').value = (doll.desc && doll.desc.es) || '';
+            document.getElementById('admin-desc-en').value = (doll.desc && doll.desc.en) || '';
+            document.getElementById('admin-desc-ru').value = (doll.desc && doll.desc.ru) || '';
+            document.getElementById('admin-hero-bg').value = HERO_BG || '';
+        }
+
+        function syncFromGoogleDriveInput() {
+            const raw = document.getElementById('admin-drive-sync').value.trim();
+            if (!raw) return;
+
+            const doll = DOLLS.find(d => d.id === adminSelectedDollId);
+            if (!doll) return;
+
+            const urls = raw.match(/https?:\/\/[^\s,"']+/g) || [raw];
+            const imgList = [];
+
+            urls.forEach(u => {
+                if (u.toLowerCase().includes('.mp4') || u.toLowerCase().includes('video') || u.toLowerCase().includes('reels')) {
+                    doll.reelsUrl = u;
+                } else if (!u.includes('/folders/')) {
+                    imgList.push(u);
+                }
+            });
+
+            if (imgList.length > 0) {
+                doll.coverUrl = imgList[0];
+                if (imgList.length > 1) {
+                    doll.gallery = imgList.slice(1);
+                }
+            }
+
+            populateAdminForm(adminSelectedDollId);
+            saveDollsConfig();
+            renderAllDolls();
+            document.getElementById('admin-drive-sync').value = '';
+            showToast('✓ Ссылки синхронизированы');
+        }
+
+        function applyJsonImport() {
+            const raw = document.getElementById('admin-json-input').value.trim();
+            if (!raw) return;
+            try {
+                const data = JSON.parse(raw);
+                const doll = DOLLS.find(d => d.id === adminSelectedDollId);
+                if (!doll) return;
+
+                if (data.title) doll.title = { ...doll.title, ...data.title };
+                if (data.desc) doll.desc = { ...doll.desc, ...data.desc };
+                if (data.badge) doll.badge = { ...doll.badge, ...data.badge };
+                if (data.reelsUrl) doll.reelsUrl = data.reelsUrl;
+                if (data.coverUrl) doll.coverUrl = data.coverUrl;
+                if (Array.isArray(data.gallery)) doll.gallery = data.gallery;
+
+                saveDollsConfig();
+                populateAdminForm(adminSelectedDollId);
+                renderAdminTabs();
+                renderAllDolls();
+                document.getElementById('admin-json-input').value = '';
+                showToast('✓ JSON импортирован');
+            } catch (e) {
+                showToast('Ошибка формата JSON');
+            }
+        }
+
+        async function handleAdminFileUpload(event, type) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const key = `${adminSelectedDollId}_${type}_${Date.now()}`;
+            const idbUrl = await saveBlobToDB(key, file);
+            if (!idbUrl) return;
+
+            const doll = DOLLS.find(d => d.id === adminSelectedDollId);
+            if (!doll) return;
+
+            if (type === 'video') {
+                doll.reelsUrl = idbUrl;
+                document.getElementById('admin-video-url').value = idbUrl;
+            } else {
+                doll.coverUrl = idbUrl;
+                document.getElementById('admin-image-url').value = idbUrl;
+            }
+            saveDollsConfig();
+            renderAllDolls();
+            showToast('✓ Файл сохранен в браузере');
+        }
+
+        async function handleAdminGalleryFilesUpload(event) {
+            const files = Array.from(event.target.files || []);
+            if (!files.length) return;
+            const doll = DOLLS.find(d => d.id === adminSelectedDollId);
+            if (!doll) return;
+            if (!Array.isArray(doll.gallery)) doll.gallery = [];
+
+            for (const f of files) {
+                const key = `${adminSelectedDollId}_gal_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+                const idbUrl = await saveBlobToDB(key, f);
+                if (idbUrl) doll.gallery.push(idbUrl);
+            }
+            document.getElementById('admin-gallery-urls').value = doll.gallery.join('\n');
+            saveDollsConfig();
+            showToast(`✓ Добавлено фото: ${files.length}`);
+        }
+
+        async function handleHeroBgUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const key = `hero_bg_${Date.now()}`;
+            const idbUrl = await saveBlobToDB(key, file);
+            if (idbUrl) {
+                HERO_BG = idbUrl;
+                document.getElementById('admin-hero-bg').value = idbUrl;
+                updateHeroBannerDisplay();
+                saveDollsConfig();
+                showToast('✓ Фон шапки обновлен');
+            }
+        }
+
+        function saveAdminChanges() {
+            const doll = DOLLS.find(d => d.id === adminSelectedDollId);
+            if (!doll) return;
+
+            doll.reelsUrl = document.getElementById('admin-video-url').value.trim();
+            doll.coverUrl = document.getElementById('admin-image-url').value.trim();
+            doll.gallery = document.getElementById('admin-gallery-urls').value
+                .split('\n')
+                .map(s => s.trim())
+                .filter(Boolean);
+
+            if (!doll.title) doll.title = {};
+            if (!doll.desc) doll.desc = {};
+
+            doll.title.es = document.getElementById('admin-title-es').value.trim() || doll.title.es;
+            doll.title.en = document.getElementById('admin-title-en').value.trim() || doll.title.en;
+            doll.title.ru = document.getElementById('admin-title-ru').value.trim() || doll.title.ru;
+
+            doll.desc.es = document.getElementById('admin-desc-es').value.trim() || doll.desc.es;
+            doll.desc.en = document.getElementById('admin-desc-en').value.trim() || doll.desc.en;
+            doll.desc.ru = document.getElementById('admin-desc-ru').value.trim() || doll.desc.ru;
+
+            const heroInput = document.getElementById('admin-hero-bg').value.trim();
+            if (heroInput) {
+                HERO_BG = heroInput;
+                updateHeroBannerDisplay();
+            }
+
+            saveDollsConfig();
+            closeAdminModal();
+            showToast('✓ Изменения сохранены');
+        }
+
+        function resetCurrentDollToDefaults() {
+            const defaultMatch = DEFAULT_DOLLS.find(d => d.id === adminSelectedDollId);
+            if (!defaultMatch) return;
+
+            const index = DOLLS.findIndex(d => d.id === adminSelectedDollId);
+            DOLLS[index] = JSON.parse(JSON.stringify(defaultMatch));
+            saveDollsConfig();
+            populateAdminForm(adminSelectedDollId);
+            renderAdminTabs();
+            renderAllDolls();
+            showToast('✓ Сброшено по умолчанию');
+        }
+
+        // --- 5. Showcase / Ver Más Modal ---
+        function openShowcaseModal(dollId) {
+            const doll = DOLLS.find(d => d.id === dollId);
+            if (!doll) return;
+
+            const title = (doll.title && (doll.title[currentLang] || doll.title.es)) || '';
+            const badge = (doll.badge && (doll.badge[currentLang] || doll.badge.es)) || '';
+            const desc = (doll.desc && (doll.desc[currentLang] || doll.desc.es)) || '';
+            const safeTitle = title.replace(/'/g, "\\'");
+
+            document.getElementById('showcase-title').textContent = title;
+            document.getElementById('showcase-badge').textContent = badge;
+            document.getElementById('showcase-desc').textContent = desc;
+
+            const waMsg = encodeURIComponent(`Hola Tatiana, me interesa la pieza artesanal "${title}" de Mamadel Art.`);
+            const waBtn = document.getElementById('showcase-whatsapp-btn');
+            if (waBtn) waBtn.href = `https://wa.me/34671587761?text=${waMsg}`;
+
+            const container = document.getElementById('showcase-media-container');
+            container.innerHTML = '';
+
+            const driveIframeUrl = getDriveVideoIframeUrl(doll.reelsUrl);
+            const videoSrc = resolveVideoUrl(doll.reelsUrl);
+
+            if (driveIframeUrl) {
+                const vidCard = document.createElement('div');
+                vidCard.className = "rounded-xl overflow-hidden border border-brand-gold/30 bg-brand-base flex flex-col";
+                vidCard.innerHTML = `
+                    <div class="relative aspect-[9/16] bg-black">
+                        <iframe src="${driveIframeUrl}" class="w-full h-full border-0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                `;
+                container.appendChild(vidCard);
+            } else if (videoSrc) {
+                const vidCard = document.createElement('div');
+                vidCard.className = "rounded-xl overflow-hidden border border-brand-gold/30 bg-brand-base flex flex-col";
+                vidCard.innerHTML = `
+                    <div class="relative aspect-[9/16] bg-black">
+                        <video src="${videoSrc}" controls playsinline class="w-full h-full object-cover"></video>
+                    </div>
+                `;
+                container.appendChild(vidCard);
+            }
+
+            const allPhotos = [];
+            if (doll.coverUrl || doll.defaultCover) allPhotos.push(doll.coverUrl || doll.defaultCover);
+            if (Array.isArray(doll.gallery)) {
+                doll.gallery.forEach(g => {
+                    if (g && !allPhotos.includes(g)) allPhotos.push(g);
+                });
+            }
+
+            allPhotos.forEach((rawUrl) => {
+                const imgSrc = resolveImageUrl(rawUrl);
+                if (!imgSrc) return;
+                const imgCard = document.createElement('div');
+                imgCard.className = "rounded-xl overflow-hidden border border-brand-gold/30 bg-brand-base flex flex-col";
+                imgCard.innerHTML = `
+                    <div class="relative aspect-[3/4] bg-brand-brown overflow-hidden">
+                        <img src="${imgSrc}" alt="${title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="handleImageError(this, '${rawUrl}', '${safeTitle}')">
+                    </div>
+                `;
+                container.appendChild(imgCard);
+            });
+
+            const modal = document.getElementById('showcase-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeShowcaseModal() {
+            const modal = document.getElementById('showcase-modal');
+            if (modal) {
+                const videos = modal.querySelectorAll('video');
+                videos.forEach(v => v.pause());
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function useFallbackImage(img, title) {
+            img.onerror = null;
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="711" viewBox="0 0 400 711">
+                <defs>
+                    <radialGradient id="g" cx="50%" cy="40%" r="60%">
+                        <stop offset="0%" stop-color="#3a251b"/>
+                        <stop offset="100%" stop-color="#19100c"/>
+                    </radialGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#g)"/>
+                <circle cx="200" cy="270" r="70" stroke="#d4af37" stroke-width="1.5" fill="none" opacity="0.4"/>
+                <text x="200" y="390" font-family="serif" font-size="20" fill="#d4af37" text-anchor="middle" font-weight="bold">${title || 'Mamadel Art'}</text>
+                <text x="200" y="420" font-family="sans-serif" font-size="12" fill="#FAF7F2" text-anchor="middle" opacity="0.7">Mamadel Art</text>
+            </svg>`;
+            img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+        }
+
+        // --- 6. Floating Gold Dust Particles ---
+        let canvas = null;
+        let ctx = null;
+        let particles = [];
+        const particleCount = 45;
+
+        function resizeCanvas() {
+            if (!canvas) return;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class DustParticle {
+            constructor() {
+                this.reset();
+                if (canvas) this.y = Math.random() * canvas.height;
+            }
+            reset() {
+                if (!canvas) return;
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + 20;
+                this.size = Math.random() * 2 + 0.8;
+                this.speedY = -(Math.random() * 0.45 + 0.15);
+                this.speedX = (Math.random() - 0.5) * 0.25;
+                this.opacity = Math.random() * 0.55 + 0.15;
+            }
+            update() {
+                if (!canvas) return;
+                this.y += this.speedY;
+                this.x += this.speedX + Math.sin(this.y * 0.008) * 0.15;
+                if (this.y < -10 || this.x < -10 || this.x > canvas.width + 10) this.reset();
+            }
+            draw() {
+                if (!ctx) return;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            canvas = document.getElementById('particle-canvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+            resizeCanvas();
+            particles = [];
+            for (let i = 0; i < particleCount; i++) particles.push(new DustParticle());
+        }
+
+        function animate() {
+            if (ctx && canvas) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+            }
+            requestAnimationFrame(animate);
+        }
+
+        // --- Safe Startup Execution ---
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('DOMContentLoaded', async () => {
+            initParticles();
+            animate();
+            loadSavedDollsConfig();
+            await hydrateAllBlobs();
+            updateHeroBannerDisplay();
+            registerAdminTriggers();
+            setLang('es');
+        });
+    </script>
+</body>
+</html>
