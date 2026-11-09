@@ -119,7 +119,7 @@
     <canvas id="particle-canvas" width="1536" height="695"></canvas>
 
     <!-- Всплывающее уведомление -->
-    <div id="toast-notice" class="fixed bottom-5 right-5 z-[120] bg-brand-card border border-brand-gold text-brand-gold px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold transition-all hidden">✓ Ссылки и фото обновлены на странице</div>
+    <div id="toast-notice" class="fixed bottom-5 right-5 z-[120] bg-brand-card border border-brand-gold text-brand-gold px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold transition-all hidden" style="display: none;">✓ Ссылки и фото обновлены на странице</div>
 
     <div class="content-layer min-h-screen flex flex-col">
 
@@ -507,7 +507,7 @@
     </div>
 
     <!-- МОДАЛЬНОЕ ОКНО: Ссылки на Facebook для каждой карточки + Вшивание фото в единый HTML -->
-    <div id="packager-modal" onclick="if(event.target === this) closePackagerModal()" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4 flex">
+    <div id="packager-modal" class="hidden fixed inset-0 z-[100] bg-black/85 backdrop-blur-md items-center justify-center p-3 sm:p-6 overflow-y-auto" style="display: none !important;">
         <div class="bg-brand-card border border-brand-gold/60 rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl max-h-[92vh] flex flex-col text-left">
             
             <div class="flex justify-between items-center border-b border-brand-gold/25 pb-3 mb-4">
@@ -1207,4 +1207,13 @@
         });
     </script>
 
+
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        var m = document.getElementById('packager-modal');
+        if (m) { m.classList.add('hidden'); m.classList.remove('flex'); m.style.display = 'none'; }
+        var t = document.getElementById('toast-notice');
+        if (t) { t.classList.add('hidden'); t.style.display = 'none'; }
+    });
+</script>
 </body></html>
